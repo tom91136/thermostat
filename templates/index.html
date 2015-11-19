@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+	<meta charset="utf-8">
+	<title>&pi; Thermostat</title>
+	<meta name="description" content="&pi; Thermostat ">
+	<meta name="author" content="Tom Lin">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href='http://fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet'
+		  type='text/css'>
+	<link rel="stylesheet"
+		  href="{{ url_for('static', filename='js/jquery-ui-1.11.2/jquery-ui.css') }}">
+
+	<link rel='stylesheet' type='text/css'
+		  href="{{ url_for('static', filename='js/fullcalendar-2.2.3/fullcalendar.css') }}"/>
+
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/skeleton.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+	<!--[if lt IE 9]>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<script type="text/javascript">
+
+		var $SCRIPT_ROOT = {{ request.script_root | tojson | safe }};
+		var tempBlocks = {{ timetable | tojson | safe }};
+
+		tempBlocks.forEach(function (item, i) {
+			item.id = i;
+		});
+
+	</script>
+</head>
+
+<body>
+<div id="background"></div>
+<div id="wrapper">
+	<h2 class="title">&pi; Thermostat</h2>
+
+	<div class="container">
+		<div class="row  centered">
+			<h5 class="block-title inlined">Status</h5>
+			Heater: ON | Overrides: none | Next temperature: Today 14:20 @25C
+		</div>
+		<div class="row">
+			<div class="six columns block centered">
+				<h5 class="block-title">Current Temperature</h5>
+
+				<h1 id="current-temperature">
+
+
+					<span id="temperature"></span>
+
+						<span id="target-temperature"></span>
+				</h1>
+
+				Overrides
+				<br>
+				Temperature
+				<input id="temperature-spinner" class="temperature-spinner" size="1"
+					   value="{{ config["override"] }}">&deg;C
+				<input type="submit" value="Lock" id="temperature-lock" class="button-primary">
+
+
+			</div>
+			<div class="six columns block centered">
+				<h5 class="block-title">Socket configuration</h5>
+				User controllable sockets:
+				<ol id="socket-config" class="sockets centered inlined">
+					{% for socket in config["socket"] %}
+						<li><input type="checkbox" id="socket-{{ loop.index }}"
+								   {% if socket %}checked{% endif %}>
+						<label for="socket-{{ loop.index }}"
+							   class="socket"></label>
+					{% endfor %}
+				</ol>
+				<br>
+				<a href="#" id="show-heater-config">Configure heater socket</a>
+
+				<div id="heater-config-block">
+					Heater is connected on:
+					<br>
+					<ol id="heater-socket-config" class="sockets centered inlined">
+
+						{% for socket in config["heater_socket"] %}
+							<li><input type="checkbox" id="heater-socket-{{ loop.index }}"
+									   {% if socket %}checked{% endif %}>
+							<label for="heater-socket-{{ loop.index }}"
+								   class="socket-s"></label>
+						{% endfor %}
+
+
+						</li>
+					</ol>
+				</div>
+
+			</div>
+		</div>
+		<div class="row block">
+			<h5 class="block-title">Timetable</h5>
+
+			<div id="timetable"></div>
+			<hr/>
+		</div>
+
+		<div id="dialog-add" title="Add temperature block">
+			<span class="centered maxwidth inlined "><input id="block-adjust-temperature"
+															class="temperature-spinner" size="1"
+															value="25">&deg;C</span>
+
+		</div>
+
+		<div class="row block">
+			<h5 class="block-title">Temperature/Performance history</h5>
+
+			<canvas id="history-chart" width="860" height="400"></canvas>
+			<canvas id="performance-chart" width="860" height="200"></canvas>
+		</div>
+	</div>
+
+
+	<script src="{{ url_for('static', filename='js/jquery-2.1.1.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/jquery-ui-1.11.2/jquery-ui.min.js') }}"></script>
+
+
+	<script src="{{ url_for('static', filename='js/fullcalendar-2.2.3/lib/moment.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/fullcalendar-2.2.3/fullcalendar.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/date.format.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/Chart.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+
+</div>
+
+
+</body>
+</html>

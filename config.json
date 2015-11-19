@@ -1,0 +1,25 @@
+{
+    "heater_socket": [
+        true,
+        false,
+        false
+    ],
+    "override": -1,
+    "socket": [
+        true,
+        false,
+        false
+    ],
+    "timetable": [
+        {
+            "end": 1419291000000,
+            "start": 1419204600000,
+            "title": "33"
+        },
+        {
+            "end": 1419204600000,
+            "start": 1419166800000,
+            "title": "23"
+        }
+    ]
+}
